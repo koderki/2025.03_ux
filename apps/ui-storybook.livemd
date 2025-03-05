@@ -1,0 +1,47 @@
+<!-- livebook:{"app_settings":{"access_type":"public","output_type":"rich","slug":"ui-storybook"}} -->
+
+# UI Storybook
+
+```elixir
+Mix.install([
+  {:kino, "~> 0.15.2"}
+])
+```
+
+## User Interface
+
+```elixir
+form = Kino.Control.form(
+  [
+    text: Kino.Input.text("Wprowadź tekst")
+  ],
+  submit: "Wyślij"
+)
+```
+
+```elixir
+frame = Kino.Frame.new()
+
+content =
+  Kino.Layout.grid(
+    [
+      Kino.Markdown.new("""
+      ### Kolumna 1
+      Tekst w pierwszej kolumnie
+      """),
+      Kino.Markdown.new("""
+      ### Kolumna 2
+      Tekst w drugiej kolumnie
+      """),
+      Kino.Markdown.new("""
+      ### Kolumna 3
+      Tekst w trzeciej kolumnie
+      """)
+    ],
+    columns: 3
+  )
+
+Kino.Frame.render(frame, content)
+
+frame
+```
