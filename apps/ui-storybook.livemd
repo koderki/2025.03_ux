@@ -8,16 +8,34 @@ Mix.install([
 ])
 ```
 
-## User Interface
+## Elementy formularza
 
 ```elixir
-form = Kino.Control.form(
-  [
-    text: Kino.Input.text("Wprowadź tekst")
-  ],
-  submit: "Wyślij"
-)
+form =
+  Kino.Control.form(
+    [
+      name: Kino.Input.text("Imię", placeholder: "Wpisz imię"),
+      age: Kino.Input.number("Wiek", min: 18, max: 120, step: 1),
+      range: Kino.Input.range("Wzrost [cm]", min: 50, max: 250, step: 1),
+      city:
+        Kino.Input.select("Miasto", [
+          {1, "Warszawa"},
+          {2, "Kraków"},
+          {3, "Wrocław"},
+          {4, "Gdańsk"},
+          {5, "Poznań"}
+        ]),
+      subscribe: Kino.Input.checkbox("Zapisz się na newsletter?"),
+      color: Kino.Input.color("Ulubiony kolor"),
+      date: Kino.Input.date("Data następnych imienin"),
+      time: Kino.Input.utc_time("O której dzisiaj wstałaś?"),
+      bio: Kino.Input.textarea("Bio", default: "Opowiedz coś o sobie\n\n")
+    ],
+    submit: "Wyślij formularz"
+  )
 ```
+
+## Layout Grid
 
 ```elixir
 frame = Kino.Frame.new()
@@ -28,6 +46,12 @@ content =
       Kino.Markdown.new("""
       ### Kolumna 1
       Tekst w pierwszej kolumnie
+      
+      który ciągnie się
+      
+      przez kilka
+      
+      linii
       """),
       Kino.Markdown.new("""
       ### Kolumna 2
@@ -43,5 +67,113 @@ content =
 
 Kino.Frame.render(frame, content)
 
+frame
+```
+
+```elixir
+frame = Kino.Frame.new()
+
+content =
+  Kino.Layout.grid(
+    [
+      Kino.Markdown.new("""
+      ### Kolumna 1
+      Tekst w pierwszej kolumnie
+      """),
+      Kino.Markdown.new("""
+      ### Kolumna 2
+      Tekst w drugiej kolumnie
+      """)
+    ],
+    columns: 2, boxed: true
+  )
+
+Kino.Frame.render(frame, content)
+
+frame
+```
+
+## Markdown
+
+````elixir
+frame = Kino.Frame.new()
+
+basic_markdown =
+  Kino.Markdown.new("""
+  # Heading 1
+  ## Heading 2
+  ### Heading 3
+
+  This is a paragraph with **bold** and *italic* text. You can also use `inline code`.
+
+  - Here's an unordered list:
+    - Item 1
+    - Item 2
+      - Sub-item 1
+  - Item 3
+
+  1. And an ordered list:
+  2. Item 2
+  3. Item 3
+
+
+  This is some text above the horizontal rule.
+
+  ---
+
+  This is some text below the horizontal rule.
+
+  > This is a blockquote.
+  > It can span multiple lines.
+  >
+  > > And it can be nested!
+
+  | Header 1 | Header 2 | Header 3 |
+  | -------- | -------- | -------- |
+  | Cell 1   | Cell 2   | Cell 3   |
+  | Cell 4   | Cell 5   | Cell 6   |
+  | Cell 7   | Cell 8   | Cell 9   |
+  | Cell 10  | Cell 11  | Cell 12  |
+
+  Here is the link to:
+  [Kino Github](https://github.com/livebook-dev/kino)
+
+  ```elixir
+  # Elixir code block example
+  IO.puts("Hello, world!")
+  ```
+
+  ```python
+  # Python code block example
+  print("The sum is: ", 1+5)
+  ```
+
+  """)
+
+Kino.Frame.render(frame, basic_markdown)
+
+frame
+````
+
+```elixir
+pink_background_markdown =
+  Kino.Layout.grid(
+    [
+      Kino.Markdown.new("""
+      <div style="background-color: #e1b0f3; padding: 20px; border-radius: 10px;">
+        <h1>Markdown with Pink Background</h1>
+        <p>This is a paragraph with <b>bold</b> and <i>italic</i> text.</p>
+        <ul>
+          <li>List item 1</li>
+          <li>List item 2</li>
+        </ul>
+      </div>
+      """)
+    ],
+    columns: 1
+  )
+
+frame = Kino.Frame.new()
+Kino.Frame.render(frame, pink_background_markdown)
 frame
 ```
